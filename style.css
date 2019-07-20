@@ -1,0 +1,35 @@
+.flex-cont {
+  background-color: white;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.flex-item-1 {
+   	position: relative;
+	display: block;
+    flex-grow: 1;
+    overflow: hidden;
+}
+
+img {
+	height: 200px;
+    vertical-align: bottom;
+    min-width: 100%;
+    max-width: 100%;
+}
+
+.flex-cont:after {
+ /**
+     * Creates a blank element after the last image.
+     */
+     content: '';
+     /**
+      * Prevents the images in the last row to grow.
+      * In case they become too large.
+      */
+     flex-grow: 99999;
+     /**
+      * Well... If the left space is less than (screenHeight / 4), make them grow!
+      */
+     min-width: calc(100vw / 4);
+}
