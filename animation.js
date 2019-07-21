@@ -1,6 +1,6 @@
 window.addEventListener('load', function(event) {
   var targetClassName = 'flex-wrap-anim';
-  var defaultDuration = '1s';
+  var defaultDuration = '0.5s';
 
   var dummyList = [];
   function addDummy(item, duration) {
@@ -16,6 +16,7 @@ window.addEventListener('load', function(event) {
         dummyDiv.style.width = rect.width + 'px';
         dummyDiv.style.height = rect.height + 'px';
         dummyDiv.style.visibility = 'hidden';
+        dummyDiv.style.flexGrow = '1';
         dummyDiv['__' + targetClassName + '_pair'] = item;
         dummyDiv['__' + targetClassName + '_duration'] = duration;
         item.parentNode.appendChild(dummyDiv);
@@ -35,19 +36,24 @@ window.addEventListener('load', function(event) {
     }
   }
 
-  window.addEventListener('resize', function(event) {
+  setTimeout(function() {
+    reshapeDivs();
+  }, 0);
+
+  function reshapeDivs() {
     dummyList.forEach(function(dummyDiv) {
       var item = dummyDiv['__' + targetClassName + '_pair'];
-        console.log(item);
       var duration = dummyDiv['__' + targetClassName + '_duration'];
-      if (item.offsetTop !== dummyDiv.offsetTop) {
       item.style.transition = 'all ' + duration;
       item.style.top = dummyDiv.offsetTop + 'px';
       item.style.left = dummyDiv.offsetLeft + 'px';
-    } else {
-      item.style.transition = '';
-      item.style.left = dummyDiv.offsetLeft + 'px';
-    }
-  });
+      var rect = dummyDiv.getBoundingClientRect();
+      item.style.width = rect.width * 1.01 + 'px';
+      item.style.height = rect.height + 'px';
+    });
+  }
+
+  window.addEventListener('resize', function(event) {
+    reshapeDivs();
   });
 });
